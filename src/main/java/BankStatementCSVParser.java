@@ -5,13 +5,17 @@ import java.util.List;
 
 /**
  * Responsible for the CSV file extraction operation.
+ *
+ * @inheritDoc
  * @author      Ayrton de Andrade
  */
-public class BankStatementCSVParser {
+public class BankStatementCSVParser implements  BankStatementParser {
 
     // Define o padrão da data.
     private static final DateTimeFormatter DATE_PATTERN =
             DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    /*
 
     /**
      * Extrai os dados das colunas.
@@ -19,7 +23,7 @@ public class BankStatementCSVParser {
      * @param line  current line to extract the columns.
      * @return      A BankTransaction object.
      * @author      Ayrton de Andrade
-     */
+
     private BankTransaction parseFromCSV(final String line) {
         // O arquivo CSV trabalhado aqui é separado por virgula.
         final String[] colums = line.split(",");
@@ -36,18 +40,47 @@ public class BankStatementCSVParser {
         return new BankTransaction(date, amount, description);
     }
 
+
     /**
      * Extrai as linhas do arquivo.
      *
      * @param   lines   set of lines.
      * @return          A list of all transaction ready for analyze.
      * @author          Ayrton de Andrade
-     * */
+
     public List<BankTransaction> parseLineFromCSV(final List<String> lines) {
         final List<BankTransaction> bankTransactions = new ArrayList<BankTransaction>();
 
         for (final String line : lines) {
             bankTransactions.add(parseFromCSV(line));
+        }
+
+        return bankTransactions;
+    }
+    */
+    @Override
+    public BankTransaction parseFrom(String line) {
+        // O arquivo CSV trabalhado aqui é separado por virgula.
+        final String[] colums = line.split(",");
+
+        // Verifica se a data no arquivo está de acordo com o formato definido.
+        final LocalDate date = LocalDate.parse(colums[0], DATE_PATTERN);
+
+        // Extrai a parte decimal da linha que corresponde ao valor da transação.
+        final double amount = Double.parseDouble(colums[1]);
+
+        // Extrai a descrição de cada transação
+        final String description = colums[2];
+
+        return new BankTransaction(date, amount, description);
+    }
+
+    @Override
+    public List<BankTransaction> parseLinesFrom(List<String> lines) {
+        final List<BankTransaction> bankTransactions = new ArrayList<BankTransaction>();
+
+        for (final String line : lines) {
+            bankTransactions.add(parseFrom(line));
         }
 
         return bankTransactions;

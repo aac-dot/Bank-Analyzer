@@ -21,7 +21,7 @@ public class BankTransactionAnalyzerSimple {
         BankStatementCSVParser bankStatementParser = new BankStatementCSVParser();
 
         // Extrai as transações do arquivo CSV.
-        List<BankTransaction> bankTransactions = bankStatementParser.parseLineFromCSV(lines);
+        List<BankTransaction> bankTransactions = bankStatementParser.parseLinesFrom(lines);
 
         BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
 
