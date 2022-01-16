@@ -11,32 +11,12 @@ import java.util.List;
  * @author  Ayrton de Andrade
 * */
 public class BankTransactionAnalyzerSimple {
-    private static final String RESOURCE = "src/main/resources/";
+
 
     public static void main(String... args) throws IOException {
-        // Cria o caminho do arquivo do diretório RESOURCE.
-        final Path path = Paths.get(RESOURCE + args[0]);
-        final List<String> lines = Files.readAllLines(path);
+        BankStatementAnalyzer bankStatementAnalyzer = new BankStatementAnalyzer();
+        BankStatementParser bankStatementParser = new BankStatementCSVParser();
 
-        BankStatementCSVParser bankStatementParser = new BankStatementCSVParser();
-
-        // Extrai as transações do arquivo CSV.
-        List<BankTransaction> bankTransactions = bankStatementParser.parseLinesFrom(lines);
-
-        BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
-
-        collectSummary(bankStatementProcessor);
-    }
-
-    /**
-     * Display a report of the transactions.
-     *
-     * @param   bankStatementProcessor      The calculated transactions
-     * @author  Ayrton de Andrade
-    * */
-    private static void collectSummary(final BankStatementProcessor bankStatementProcessor) {
-        System.out.println("The total for all transactions: " + bankStatementProcessor.calculateTotalAmount());
-        System.out.println("The total for all transactions in January: " + bankStatementProcessor.calculateTotalInMonth(Month.JANUARY));
-        System.out.println("The total salary received: " + bankStatementProcessor.calculateTotalForCategory("Salary"));
+        bankStatementAnalyzer.analyze(args[0], bankStatementParser);
     }
 }
