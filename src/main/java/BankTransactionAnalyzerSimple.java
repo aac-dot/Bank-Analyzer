@@ -18,5 +18,6 @@ public class BankTransactionAnalyzerSimple {
         BankStatementParser bankStatementParser = new BankStatementCSVParser();
 
         bankStatementAnalyzer.analyze(args[0], bankStatementParser);
+
     }
 }
